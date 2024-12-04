@@ -63,7 +63,7 @@ STATIC_DIR = Path("static")
 LAST_DOWNLOAD_FILE = STATIC_DIR / "last_download.txt"
 
 
-def download_static_files(user, repo, asset_name):
+def download_static_files(user, repo, asset_name): # type: ignore
     """Style-Bert-VITS2エディターの最新のビルドzipをダウンロードして展開する。"""
 
     logger.info("Checking for new release...")
@@ -90,7 +90,7 @@ def download_static_files(user, repo, asset_name):
         logger.warning("Asset not found. Proceeding without static files.")
 
 
-def get_latest_release(user, repo):
+def get_latest_release(user, repo): # type: ignore
     url = f"https://api.github.com/repos/{user}/{repo}/releases/latest"
     try:
         response = requests.get(url)
@@ -100,14 +100,14 @@ def get_latest_release(user, repo):
         return None
 
 
-def get_asset_url(release, asset_name):
+def get_asset_url(release, asset_name): # type: ignore
     for asset in release["assets"]:
         if asset["name"] == asset_name:
             return asset["browser_download_url"]
     return None
 
 
-def download_and_extract(url, extract_to: Path):
+def download_and_extract(url, extract_to: Path): # type: ignore
     response = requests.get(url)
     response.raise_for_status()
     with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
@@ -125,7 +125,7 @@ def download_and_extract(url, extract_to: Path):
         logger.warning("index.html not found in the extracted files.")
 
 
-def new_release_available(latest_release):
+def new_release_available(latest_release): # type: ignore
     if LAST_DOWNLOAD_FILE.exists():
         with open(LAST_DOWNLOAD_FILE) as file:
             last_download_str = file.read().strip()
@@ -141,7 +141,7 @@ def new_release_available(latest_release):
     return True
 
 
-def save_last_download(latest_release):
+def save_last_download(latest_release): # type: ignore
     with open(LAST_DOWNLOAD_FILE, "w") as file:
         file.write(latest_release["published_at"])
 

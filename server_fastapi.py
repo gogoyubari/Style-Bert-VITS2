@@ -38,6 +38,8 @@ from style_bert_vits2.nlp import bert_models
 from style_bert_vits2.nlp.japanese import pyopenjtalk_worker as pyopenjtalk
 from style_bert_vits2.nlp.japanese.user_dict import update_dict
 from style_bert_vits2.tts_model import TTSModel, TTSModelHolder
+from style_bert_vits2.nlp.japanese.g2p_utils import g2kata_tone
+from style_bert_vits2.nlp.japanese.normalizer import normalize_text
 
 
 config = get_config()
@@ -191,7 +193,7 @@ if __name__ == "__main__":
     ):
         """Infer text to speech(テキストから感情付き音声を生成する)"""
         logger.info(
-            f"{request.client.host}:{request.client.port}/voice  { unquote(str(request.query_params) )}"
+            f"{request.client.host}:{request.client.port}/voice  { unquote(str(request.query_params) )}" # type: ignore
         )
         if request.method == "GET":
             logger.warning(
@@ -283,7 +285,7 @@ if __name__ == "__main__":
         return get_loaded_models_info()
 
     @app.get("/status")
-    def get_status():
+    def get_status(): # type: ignore
         """実行環境のステータスを取得"""
         cpu_percent = psutil.cpu_percent(interval=1)
         memory_info = psutil.virtual_memory()
@@ -324,7 +326,7 @@ if __name__ == "__main__":
     ):
         """wavデータを取得する"""
         logger.info(
-            f"{request.client.host}:{request.client.port}/tools/get_audio  { unquote(str(request.query_params) )}"
+            f"{request.client.host}:{request.client.port}/tools/get_audio  { unquote(str(request.query_params) )}" # type: ignore
         )
         if not os.path.isfile(path):
             raise_validation_error(f"path={path} not found", "path")
